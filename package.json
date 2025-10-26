@@ -1,0 +1,36 @@
+{
+  "name": "vue-ionic-standard-form",
+  "version": "1.0.0",
+  "description": "Dynamic Ionic form generator for Vue 3",
+  "main": "dist/vue-ionic-standard-form.umd.js",
+  "module": "dist/vue-ionic-standard-form.es.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --declaration --emitDeclarationOnly && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.18",
+    "vue-multiselect": "^3.0.0-beta.3",
+    "vue-tel-input": "^9.1.4"
+  },
+  "peerDependencies": {
+    "@ionic/vue": "^8.0.0",
+    "vue": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.9.1",
+    "@vitejs/plugin-vue": "^5.0.0",
+    "@types/vue-tel-input": "^2.1.1",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0",
+    "vite-plugin-dts": "^3.5.0",
+    "vue-tsc": "^2.0.0"
+  },
+  "author": "Petros Kayange",
+  "license": "MIT"
+}
