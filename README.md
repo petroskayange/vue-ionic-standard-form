@@ -1,7 +1,3 @@
-Here is the complete and final `README.md` content, ready for you to copy and paste into your file.
-
----
-
 # 🧩 Vue Ionic Standard Form
 
 [](https://www.npmjs.com/package/vue-ionic-standard-form)
@@ -27,27 +23,26 @@ yarn add vue-ionic-standard-form
 
 ## 🧰 Quick Start
 
-### 1️⃣ Register in your Vue app
+The component is registered **locally** via import, which is the recommended method for modern Vue applications.
+
+### 1️⃣ Ensure CSS is available
+
+The necessary global styles should be imported once, typically in your main entry file or root component.
 
 ```typescript
-// main.ts
-import { createApp } from "vue";
-import App from "./App.vue";
-import VueIonicStandardForm from "vue-ionic-standard-form";
-import "vue-ionic-standard-form/dist/style.css";
-
-const app = createApp(App);
-app.use(VueIonicStandardForm);
-app.mount("#app");
+// main.ts or App.vue <script> setup
+import "vue-ionic-standard-form/dist/style.css"; // Required CSS
 ```
 
-### 2️⃣ Use in a component
+### 2️⃣ Use in a component (Local Registration)
+
+Simply import the component within your setup script (`<script setup>`) to make it available in the template as `<StandardForm />`.
 
 ```vue
 <template>
   <ion-page>
     <ion-content>
-      <vue-ionic-standard-form :formData="formSchema" ref="formRef" />
+      <standard-form :formData="formSchema" ref="formRef" />
       <ion-button @click="submitForm">Submit</ion-button>
     </ion-content>
   </ion-page>
@@ -55,6 +50,7 @@ app.mount("#app");
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { StandardForm } from "vue-ionic-standard-form";
 
 const formRef = ref();
 
@@ -80,11 +76,10 @@ const formSchema = [
 ];
 
 const submitForm = () => {
-  // Use the exposed method to get current form state
+  // Access exposed methods via ref
   const values = formRef.value.getFormValues();
   console.log("Form Submitted:", values);
 
-  // You can also programmatically validate
   const errors = formRef.value.validateForm();
   if (errors) {
     console.error("Validation Errors:", errors);
@@ -384,7 +379,7 @@ A dynamic, reactive banner used to display contextual messages based on the real
 
 ## 🧠 Exposed Methods
 
-These methods are available via the `ref` on the `vue-ionic-standard-form` component.
+These methods are available via the `ref` on the **`StandardForm`** component.
 
 | Method                      | Description                                                                                              |
 | :-------------------------- | :------------------------------------------------------------------------------------------------------- |
