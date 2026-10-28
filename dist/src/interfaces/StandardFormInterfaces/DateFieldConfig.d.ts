@@ -14,4 +14,6 @@ export interface DateFieldConfig extends BaseFormElement {
     placeholderFontSize?: string;
     placeholderFontWeight?: string;
     actionButton?: ActionButtonConfig;
+    mode?: string;
+    showTodayButton?: boolean;
 }

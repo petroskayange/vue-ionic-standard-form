@@ -1,275 +1,202 @@
 <!-- RadioButtonField.vue -->
 <template>
-  <div v-if="shouldShowField">
-    <!-- Header with optional clear button -->
-    <div class="field-header">
-      <h6 v-if="config.header" :class="config.bold">
-        {{ config.header }}
-        <span class="required" v-if="config.validation?.('') != null">*</span>
-      </h6>
+    <div
+        v-if="shouldShowField"
+        :class="[modeClass, { 'has-padding': config.padding === 'true' || config.padding === true }]"
+    >
+        <!-- Header with optional clear button -->
+        <div class="field-header">
+            <h6 v-if="config.header" :class="config.bold">
+                {{ config.header }}
+                <span class="required" v-if="config.validation?.('', allFormValues) != null">*</span>
+            </h6>
 
-      <!-- Clear button (shown when there's a selection and clearable is enabled) -->
-      <button
-        v-if="config.showClearButton && selectedValue !== null"
-        type="button"
-        class="clear-button"
-        @click="clearSelection"
-        :disabled="isDisabled"
-        title="Clear selection"
-      >
-        <ion-icon :icon="closeIcon" />
-        Clear
-      </button>
-    </div>
-
-    <!-- Radio Button Container -->
-    <div :style="{ width: config.width || '100%' }">
-      <!-- Standard Radio Group -->
-      <ion-radio-group
-        v-if="config.type === 'standard' || !config.type"
-        :value="selectedValue"
-        @ionChange="handleRadioChange"
-        class="radio-group"
-      >
-        <div
-          v-for="(option, index) in config.options"
-          :key="
-            typeof option.value === 'string' || typeof option.value === 'number'
-              ? option.value
-              : index
-          "
-          class="radio-item"
-        >
-          <ion-radio
-            :value="option.value"
-            :disabled="isDisabled || option.disabled"
-            :class="['custom-radio', { error: hasError }]"
-          />
-          <ion-label
-            class="radio-label"
-            @click="() => selectOption(option.value)"
-          >
-            {{ option.label }}
-            <!-- Clear icon for each radio option -->
+            <!-- Clear button (shown when there's a selection and clearable is enabled) -->
             <button
-              v-if="
-                selectedValue === option.value &&
-                config.showOptionClear !== false
-              "
-              type="button"
-              class="option-clear-icon"
-              @click.stop="clearSelection"
-              :disabled="isDisabled"
-              title="Clear this option"
-            >
-              <ion-icon :icon="closeIcon" />
-            </button>
-            <span v-if="option.description" class="option-description">
-              {{ option.description }}
-            </span>
-          </ion-label>
-        </div>
-      </ion-radio-group>
-
-      <!-- List Style Radio Group with individual clear buttons -->
-      <div v-else-if="config.type === 'list'" class="radio-list">
-        <div
-          v-for="(option, index) in config.options"
-          :key="
-            typeof option.value === 'string' || typeof option.value === 'number'
-              ? option.value
-              : String(index)
-          "
-          class="radio-list-item"
-          :class="{
-            selected: selectedValue === option.value,
-            disabled: isDisabled || option.disabled,
-          }"
-        >
-          <div
-            class="list-item-content"
-            @click="() => selectOption(option.value)"
-          >
-            <div class="list-item-left">
-              <ion-icon
-                v-if="option.icon"
-                :icon="option.icon"
-                class="list-item-icon"
-              />
-              <div class="list-item-text">
-                <div class="list-item-title">
-                  {{ option.label }}
-                  <!-- Clear icon for selected list item -->
-                  <button
-                    v-if="
-                      selectedValue === option.value &&
-                      config.showOptionClear !== false
-                    "
-                    type="button"
-                    class="option-clear-icon inline"
-                    @click.stop="clearSelection"
-                    :disabled="isDisabled"
-                    title="Clear this option"
-                  >
-                    <ion-icon :icon="closeIcon" />
-                  </button>
-                </div>
-                <div v-if="option.description" class="list-item-description">
-                  {{ option.description }}
-                </div>
-              </div>
-            </div>
-            <div class="list-item-right">
-              <ion-radio
-                :value="option.value"
-                :checked="selectedValue === option.value"
-                @ionSelect="handleRadioChange"
-                :disabled="isDisabled || option.disabled"
-                :class="['custom-radio', { error: hasError }]"
-              />
-              <!-- Individual clear button for selected item -->
-              <button
-                v-if="
-                  config.showIndividualClear && selectedValue === option.value
-                "
+                v-if="config.showClearButton && selectedValue !== null"
                 type="button"
-                class="item-clear-button"
-                @click.stop="clearSelection"
+                class="clear-button"
+                @click="clearSelection"
                 :disabled="isDisabled"
-                title="Clear this selection"
-              >
-                <ion-icon :icon="closeIcon" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Inline Radio Group -->
-      <ion-radio-group
-        v-else-if="config.type === 'inline'"
-        :value="selectedValue"
-        @ionChange="handleRadioChange"
-        class="radio-inline"
-      >
-        <div
-          v-for="(option, index) in config.options"
-          :key="
-            typeof option.value === 'string' || typeof option.value === 'number'
-              ? option.value
-              : index
-          "
-          class="radio-inline-item"
-        >
-          <ion-radio
-            :value="option.value"
-            :disabled="isDisabled || option.disabled"
-            :class="['custom-radio', { error: hasError }]"
-          />
-          <ion-label
-            class="radio-label"
-            @click="() => selectOption(option.value)"
-          >
-            {{ option.label }}
-            <!-- Clear icon for selected inline option -->
-            <button
-              v-if="
-                selectedValue === option.value &&
-                config.showOptionClear !== false
-              "
-              type="button"
-              class="option-clear-icon inline"
-              @click.stop="clearSelection"
-              :disabled="isDisabled"
-              title="Clear this option"
+                title="Clear selection"
             >
-              <ion-icon :icon="closeIcon" />
+                <ion-icon :icon="closeIcon" />
+                Clear
             </button>
-          </ion-label>
         </div>
-      </ion-radio-group>
 
-      <!-- Button Style Radio Group with enhanced clear functionality -->
-      <div v-else-if="config.type === 'button'" class="radio-button-group">
-        <button
-          v-for="(option, index) in config.options"
-          :key="
-            typeof option.value === 'string' || typeof option.value === 'number'
-              ? option.value
-              : String(index)
-          "
-          type="button"
-          class="radio-button"
-          :class="{
-            selected: selectedValue === option.value,
-            disabled: isDisabled || option.disabled,
-            error: hasError,
-          }"
-          @click="() => selectOption(option.value)"
-          :disabled="isDisabled || option.disabled"
-        >
-          <ion-icon
-            v-if="option.icon"
-            :icon="option.icon"
-            class="button-icon"
-          />
-          {{ option.label }}
-          <!-- Clear icon on selected button -->
-          <ion-icon
-            v-if="
-              config.showButtonClear !== false && selectedValue === option.value
-            "
-            :icon="closeIcon"
-            class="button-clear-icon"
-            @click.stop="clearSelection"
-          />
-        </button>
-      </div>
+        <!-- Radio Button Container -->
+        <div :style="{ width: config.width || '100%' }">
+            <!-- Standard Radio Group -->
+            <ion-radio-group
+                v-if="config.type === 'standard' || !config.type"
+                :value="selectedValue"
+                @ionChange="handleRadioChange"
+                :class="['radio-group', { 'indented-options': config.indentOptions }]"
+            >
+                <div
+                    v-for="(option, index) in config.options"
+                    :key="typeof option.value === 'string' || typeof option.value === 'number' ? option.value : index"
+                    class="radio-item"
+                >
+                    <ion-radio :value="option.value" :disabled="isDisabled || option.disabled" :class="['custom-radio', { error: hasError }]" />
+                    <ion-label class="radio-label" @click="() => selectOption(option.value)">
+                        <span>{{ option.label }}</span>
+                    </ion-label>
+                    <button
+                        v-if="selectedValue === option.value && config.showOptionClear !== false"
+                        type="button"
+                        class="option-clear-icon"
+                        @click.stop="clearSelection"
+                        :disabled="isDisabled"
+                        title="Clear this option"
+                    >
+                        <ion-icon :icon="closeIcon" />
+                    </button>
+                </div>
+            </ion-radio-group>
 
-      <!-- Error message -->
-      <ion-note v-if="errorMessage && isTouched" class="error-note">
-        {{ errorMessage }}
-      </ion-note>
+            <!-- List Style Radio Group with individual clear buttons -->
+            <div v-else-if="config.type === 'list'" class="radio-list">
+                <div
+                    v-for="(option, index) in config.options"
+                    :key="typeof option.value === 'string' || typeof option.value === 'number' ? option.value : String(index)"
+                    class="radio-list-item"
+                    :class="{
+                        selected: selectedValue === option.value,
+                        disabled: isDisabled || option.disabled,
+                    }"
+                >
+                    <div class="list-item-content" @click="() => selectOption(option.value)">
+                        <div class="list-item-left">
+                            <ion-icon v-if="option.icon" :icon="option.icon" class="list-item-icon" />
+                            <div class="list-item-text">
+                                <div class="list-item-title">
+                                    {{ option.label }}
+                                    <!-- Clear icon for selected list item -->
+                                    <button
+                                        v-if="selectedValue === option.value && config.showOptionClear !== false"
+                                        type="button"
+                                        class="option-clear-icon inline"
+                                        @click.stop="clearSelection"
+                                        :disabled="isDisabled"
+                                        title="Clear this option"
+                                    >
+                                        <ion-icon :icon="closeIcon" />
+                                    </button>
+                                </div>
+                                <div v-if="option.description" class="list-item-description">
+                                    {{ option.description }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-item-right">
+                            <ion-radio
+                                :value="option.value"
+                                :checked="selectedValue === option.value"
+                                @ionSelect="handleRadioChange"
+                                :disabled="isDisabled || option.disabled"
+                                :class="['custom-radio', { error: hasError }]"
+                            />
+                            <!-- Individual clear button for selected item -->
+                            <button
+                                v-if="config.showIndividualClear && selectedValue === option.value"
+                                type="button"
+                                class="item-clear-button"
+                                @click.stop="clearSelection"
+                                :disabled="isDisabled"
+                                title="Clear this selection"
+                            >
+                                <ion-icon :icon="closeIcon" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      <!-- Helper text -->
-      <ion-note v-if="config.helperText && !errorMessage" class="helper-note">
-        {{ config.helperText }}
-      </ion-note>
+            <!-- Inline Radio Group -->
+            <ion-radio-group v-else-if="config.type === 'inline'" :value="selectedValue" @ionChange="handleRadioChange" class="radio-inline">
+                <div
+                    v-for="(option, index) in config.options"
+                    :key="typeof option.value === 'string' || typeof option.value === 'number' ? option.value : index"
+                    class="radio-inline-item"
+                >
+                    <ion-radio :value="option.value" :disabled="isDisabled || option.disabled" :class="['custom-radio', { error: hasError }]" />
+                    <ion-label class="radio-label" @click="() => selectOption(option.value)">
+                        <span>{{ option.label }}</span>
+                        <!-- Clear icon for selected inline option -->
+                    </ion-label>
+                    <button
+                        v-if="selectedValue === option.value && config.showOptionClear !== false"
+                        type="button"
+                        class="option-clear-icon inline"
+                        @click.stop="clearSelection"
+                        :disabled="isDisabled"
+                        title="Clear this option"
+                    >
+                        <ion-icon :icon="closeIcon" />
+                    </button>
+                </div>
+            </ion-radio-group>
 
-      <!-- Clear all button (alternative placement at bottom) -->
-      <div
-        v-if="config.showClearButtonBottom && selectedValue !== null"
-        class="clear-section"
-      >
-        <button
-          type="button"
-          class="clear-button-bottom"
-          @click="clearSelection"
-          :disabled="isDisabled"
-        >
-          <ion-icon :icon="closeIcon" />
-          Clear Selection
-        </button>
-      </div>
+            <!-- Button Style Radio Group with enhanced clear functionality -->
+            <div v-else-if="config.type === 'button'" class="radio-button-group">
+                <button
+                    v-for="(option, index) in config.options"
+                    :key="typeof option.value === 'string' || typeof option.value === 'number' ? option.value : String(index)"
+                    type="button"
+                    class="radio-button"
+                    :class="{
+                        selected: selectedValue === option.value,
+                        disabled: isDisabled || option.disabled,
+                        error: hasError,
+                    }"
+                    @click="() => selectOption(option.value)"
+                    :disabled="isDisabled || option.disabled"
+                >
+                    <ion-icon v-if="option.icon" :icon="option.icon" class="button-icon" />
+                    {{ option.label }}
+                    <!-- Clear icon on selected button -->
+                    <ion-icon
+                        v-if="config.showButtonClear !== false && selectedValue === option.value"
+                        :icon="closeIcon"
+                        class="button-clear-icon"
+                        @click.stop="clearSelection"
+                    />
+                </button>
+            </div>
+
+            <!-- Error message -->
+            <ion-note v-if="errorMessage && isTouched" class="error-note">
+                {{ errorMessage }}
+            </ion-note>
+
+            <!-- Helper text -->
+            <ion-note v-if="config.helperText && !errorMessage" class="helper-note">
+                {{ config.helperText }}
+            </ion-note>
+
+            <!-- Clear all button (alternative placement at bottom) -->
+            <div v-if="config.showClearButtonBottom && selectedValue !== null" class="clear-section">
+                <button type="button" class="clear-button-bottom" @click="clearSelection" :disabled="isDisabled">
+                    <ion-icon :icon="closeIcon" />
+                    Clear Selection
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import {
-  IonRadio,
-  IonRadioGroup,
-  IonLabel,
-  IonIcon,
-  IonNote,
-} from "@ionic/vue";
+import { IonRadio, IonRadioGroup, IonLabel, IonIcon, IonNote } from "@ionic/vue";
 import { close as closeIcon } from "ionicons/icons";
 import type { RadioButtonFieldConfig } from "../interfaces/StandardFormInterfaces/RadioButtonFieldConfig";
 
 const props = defineProps<{
-  config: RadioButtonFieldConfig;
-  allFormValues: Record<string, any>;
+    config: RadioButtonFieldConfig;
+    allFormValues: Record<string, any>;
+    mode?: string;
 }>();
 
 const emit = defineEmits(["update:value", "field-changed", "cleared"]);
@@ -280,558 +207,682 @@ const isTouched = ref(false);
 
 // Get initial value
 function getInitialValue() {
-  return props.config.initialValue || props.config.value || null;
+    return props.config.initialValue || props.config.value || null;
 }
 
 // Watch for external config changes
 watch(
-  () => props.config.initialValue || props.config.value,
-  (newValue) => {
-    selectedValue.value = newValue || null;
-  }
+    () => props.config.initialValue || props.config.value,
+    (newValue) => {
+        selectedValue.value = newValue || null;
+    }
 );
 
 // Check if field should be disabled (dynamic disable functionality)
 const isDisabled = computed(() => {
-  if (typeof props.config.disabled === "boolean") {
-    return props.config.disabled;
-  }
-
-  if (typeof props.config.disabled === "function") {
-    try {
-      return props.config.disabled(props.allFormValues);
-    } catch (error) {
-      console.warn("Disabled function error:", error);
-      return false;
+    if (typeof props.config.disabled === "boolean") {
+        return props.config.disabled;
     }
-  }
 
-  return false;
+    if (typeof props.config.disabled === "function") {
+        try {
+            return props.config.disabled(props.allFormValues);
+        } catch (error) {
+            console.warn("Disabled function error:", error);
+            return false;
+        }
+    }
+
+    return false;
 });
 
 // Check if field should be shown based on condition
 const shouldShowField = computed(() => {
-  if (props.config.condition && typeof props.config.condition === "function") {
-    try {
-      return props.config.condition(props.allFormValues);
-    } catch (error) {
-      console.warn("Condition function error:", error);
-      return false;
+    if (props.config.condition && typeof props.config.condition === "function") {
+        try {
+            return props.config.condition(props.allFormValues);
+        } catch (error) {
+            console.warn("Condition function error:", error);
+            return false;
+        }
     }
-  }
-  return true;
+    return true;
+});
+
+const mode = computed(() => props.config.mode || props.mode || "");
+const modeClass = computed(() => {
+    if (mode.value === "standard") return "standard-style";
+    if (mode.value === "card" || mode.value === "neonatal") return "neonatal-style";
+    return "";
 });
 
 // Validation
 const errorMessage = computed(() => {
-  if (!shouldShowField.value) return null;
-  if (isDisabled.value) return null;
-  return props.config.validation?.(selectedValue.value) || null;
+    if (!shouldShowField.value) return null;
+    if (isDisabled.value) return null;
+    return props.config.validation?.(selectedValue.value, props.allFormValues) || null;
 });
 
 const hasError = computed(() => {
-  if (isDisabled.value) return false;
-  return props.config.error || (errorMessage.value !== null && isTouched.value);
+    if (isDisabled.value) return false;
+    return props.config.error || (errorMessage.value !== null && isTouched.value);
 });
 
 // Event handlers
-function handleRadioChange(event: {
-  detail: { value: string | number | boolean | null };
-}) {
-  isTouched.value = true;
-  // Only allow string, number, true, or null (filter out false)
-  if (event.detail.value === false) {
-    selectedValue.value = null;
-  } else {
-    selectedValue.value = event.detail.value as string | number | true | null;
-  }
-  emitChange();
+function handleRadioChange(event: { detail: { value: string | number | boolean | null } }) {
+    isTouched.value = true;
+    // Only allow string, number, true, or null (filter out false)
+    if (event.detail.value === false) {
+        selectedValue.value = null;
+    } else {
+        selectedValue.value = event.detail.value as string | number | true | null;
+    }
+    emitChange();
 }
 
 function selectOption(value: string | number | boolean | null) {
-  if (isDisabled.value) return;
+    if (isDisabled.value) return;
 
-  const option = props.config.options?.find((opt) => opt.value === value);
-  if (option?.disabled) return;
+    const option = props.config.options?.find((opt) => opt.value === value);
+    if (option?.disabled) return;
 
-  // Allow deselection if the same option is clicked and allowDeselect is true
-  if (props.config.allowDeselect && selectedValue.value === value) {
-    clearSelection();
-    return;
-  }
+    // Allow deselection if the same option is clicked and allowDeselect is true
+    if (props.config.allowDeselect && selectedValue.value === value) {
+        clearSelection();
+        return;
+    }
 
-  isTouched.value = true;
-  // Only allow string, number, true, or null (filter out false)
-  if (value === false) {
-    selectedValue.value = null;
-  } else {
-    selectedValue.value = value as string | number | true | null;
-  }
-  emitChange();
+    isTouched.value = true;
+    // Only allow string, number, true, or null (filter out false)
+    if (value === false) {
+        selectedValue.value = null;
+    } else {
+        selectedValue.value = value as string | number | true | null;
+    }
+    emitChange();
 }
 
 // Enhanced clear selection function
 function clearSelection() {
-  if (isDisabled.value) return;
+    if (isDisabled.value) return;
 
-  const previousValue = selectedValue.value;
-  selectedValue.value = null;
-  isTouched.value = true; // Mark as touched since user interacted
+    const previousValue = selectedValue.value;
+    selectedValue.value = null;
+    isTouched.value = true; // Mark as touched since user interacted
 
-  // Emit change events
-  emitChange();
+    // Emit change events
+    emitChange();
 
-  // Emit specific cleared event with previous value
-  emit("cleared", {
-    previousValue,
-    fieldName: props.config.name || props.config.header,
-    config: props.config,
-  });
+    // Emit specific cleared event with previous value
+    emit("cleared", {
+        previousValue,
+        fieldName: props.config.name || props.config.header,
+        config: props.config,
+    });
 
-  // Call onClear callback if provided
-  props.config.onClear?.(previousValue);
+    // Call onClear callback if provided
+    props.config.onClear?.(previousValue);
 }
 
 // Emit changes
 function emitChange() {
-  const value = selectedValue.value;
+    const value = selectedValue.value;
 
-  props.config.onChange?.(value);
-  emit("update:value", value);
-  emit("field-changed", {
-    fieldName: props.config.name || props.config.header,
-    value: value,
-    config: props.config,
-  });
+    props.config.onChange?.(value);
+    emit("update:value", value);
+    emit("field-changed", {
+        fieldName: props.config.name || props.config.header,
+        value: value,
+        config: props.config,
+    });
 }
 
 // Handle blur event
-function handleBlur(event: FocusEvent) {
-  isTouched.value = true;
-  props.config.onBlur?.(selectedValue.value, event);
-}
 
 // Watch for disabled state changes and clear value if disabled
 watch(isDisabled, (newDisabled) => {
-  if (newDisabled && selectedValue.value) {
-    selectedValue.value = null;
-    emitChange();
-  }
+    if (newDisabled && selectedValue.value) {
+        selectedValue.value = null;
+        emitChange();
+    }
 });
 
 // Expose methods for parent access
 defineExpose({
-  getValue: () => selectedValue.value,
-  setValue: (value: string | number | boolean | null) => {
-    // Only allow string, number, true, or null (filter out false)
-    if (value === false) {
-      selectedValue.value = null;
-    } else {
-      selectedValue.value = value as string | number | true | null;
-    }
-  },
-  isValid: computed(() => isDisabled.value || errorMessage.value === null),
-  validate: () => {
-    if (isDisabled.value) return null;
-    isTouched.value = true;
-    return errorMessage.value;
-  },
-  shouldShow: shouldShowField,
-  clearSelection,
-  getSelectedOption: () => {
-    return (
-      props.config.options?.find((opt) => opt.value === selectedValue.value) ||
-      null
-    );
-  },
-  markAsTouched: () => (isTouched.value = true),
-  resetTouched: () => (isTouched.value = false),
-  // New methods for clearing functionality
-  hasSelection: computed(() => selectedValue.value !== null),
-  canClear: computed(() => !isDisabled.value && selectedValue.value !== null),
+    getValue: () => selectedValue.value,
+    setValue: (value: string | number | boolean | null) => {
+        // Only allow string, number, true, or null (filter out false)
+        if (value === false) {
+            selectedValue.value = null;
+        } else {
+            selectedValue.value = value as string | number | true | null;
+        }
+    },
+    isValid: computed(() => isDisabled.value || errorMessage.value === null),
+    validate: () => {
+        if (isDisabled.value) return null;
+        isTouched.value = true;
+        return errorMessage.value;
+    },
+    shouldShow: shouldShowField,
+    clearSelection,
+    getSelectedOption: () => {
+        return props.config.options?.find((opt) => opt.value === selectedValue.value) || null;
+    },
+    markAsTouched: () => (isTouched.value = true),
+    resetTouched: () => (isTouched.value = false),
+    // New methods for clearing functionality
+    hasSelection: computed(() => selectedValue.value !== null),
+    canClear: computed(() => !isDisabled.value && selectedValue.value !== null),
 });
 </script>
 
 <style scoped>
+.neonatal-style {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    gap: 16px;
+    transition: all 0.2s ease;
+}
+
+.standard-style {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
+    gap: 16px;
+    transition: all 0.2s ease;
+}
+
+.standard-style .field-header {
+    margin-bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.standard-style .field-header h6 {
+    margin: 0;
+    font-size: var(--mahis-text-md, 1rem);
+    font-weight: 500;
+    color: #1f2937;
+    line-height: 1.4;
+    text-align: left;
+}
+
+.standard-style > div:nth-child(2) {
+    width: 100% !important;
+    flex-shrink: 0;
+}
+
+.standard-style .radio-group {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.standard-style .radio-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.standard-style .radio-label {
+    font-size: var(--mahis-text-md, 1rem);
+    color: #374151;
+    white-space: nowrap;
+    cursor: pointer;
+    order: -1;
+}
+
+.standard-style .custom-radio {
+    width: 20px;
+    height: 20px;
+    --border-width: 2px;
+    --border-color: #d1d5db;
+    --color-checked: #006401;
+    --border-color-checked: #006401;
+}
+
+.has-padding {
+    padding: 20px !important;
+}
+
+.neonatal-style:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.neonatal-style .field-header {
+    margin-bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.neonatal-style .field-header h6 {
+    margin: 0;
+    font-size: var(--mahis-text-md, 1rem);
+    font-weight: 500;
+    color: #1f2937;
+    line-height: 1.4;
+    text-align: left;
+}
+
+.neonatal-style > div:nth-child(2) {
+    width: 100% !important;
+    flex-shrink: 0;
+}
+
+.neonatal-style .radio-group {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.neonatal-style .radio-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.neonatal-style .radio-label {
+    font-size: var(--mahis-text-md, 1rem);
+    color: #374151;
+    white-space: nowrap;
+    cursor: pointer;
+    order: -1;
+}
+
+.neonatal-style .custom-radio {
+    width: 20px;
+    height: 20px;
+    --border-width: 2px;
+    --border-color: #d1d5db;
+    --color-checked: #006401;
+    --border-color-checked: #006401;
+}
+
+/* Original Styles */
 h6 {
-  margin-top: 0;
-  font-weight: 700;
+    margin-top: 0;
+    font-weight: 700;
 }
 
 .required {
-  color: red;
+    color: #ef4444;
+    margin-left: 2px;
 }
 
 .field-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
-  font-size: 18px;
-  font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: var(--mahis-text-lg, 1.125rem);
+    font-weight: 700;
 }
 
 .option-clear-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  padding: 0;
-  background: none;
-  border: 1px solid #dc3545;
-  border-radius: 50%;
-  color: #dc3545;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-left: 6px;
-  vertical-align: middle;
-}
-
-.option-clear-icon.inline {
-  margin-left: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    background: none;
+    border: 1px solid #dc3545;
+    border-radius: 50%;
+    color: #dc3545;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    vertical-align: middle;
 }
 
 .option-clear-icon:hover:not(:disabled) {
-  background-color: #dc3545;
-  color: white;
+    background-color: #dc3545;
+    color: white;
 }
 
 .option-clear-icon:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .option-clear-icon ion-icon {
-  font-size: 8px;
+    font-size: 8px;
 }
 
 .clear-button {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 8px;
-  background: none;
-  border: 1px solid #dc3545;
-  border-radius: 4px;
-  color: #dc3545;
-  cursor: pointer;
-  font-size: 12px;
-  transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: none;
+    border: 1px solid #dc3545;
+    border-radius: 4px;
+    color: #dc3545;
+    cursor: pointer;
+    font-size: var(--mahis-text-xs, 0.75rem);
+    transition: all 0.2s ease;
 }
 
 .clear-button:hover:not(:disabled) {
-  background-color: #dc3545;
-  color: white;
+    background-color: #dc3545;
+    color: white;
 }
 
 .clear-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .clear-button ion-icon {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 .radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.radio-group.indented-options {
+    padding-left: 28px;
 }
 
 .radio-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
 }
 
 .radio-label {
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1.4;
-  color: #333;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+    cursor: pointer;
+    font-size: var(--mahis-text-md, 1rem);
+    line-height: 1.4;
+    color: #333;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .option-description {
-  display: block;
-  font-size: 12px;
-  color: #666;
-  margin-top: 2px;
-  width: 100%;
+    display: block;
+    font-size: var(--mahis-text-xs, 0.75rem);
+    color: #666;
+    margin-top: 2px;
+    width: 100%;
 }
 
 .radio-list {
-  border: 1px solid #e6e6e6;
-  border-radius: 8px;
-  overflow: hidden;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .radio-list-item {
-  border-bottom: 1px solid #e6e6e6;
-  transition: background-color 0.2s ease;
+    border-bottom: 1px solid #e6e6e6;
+    transition: background-color 0.2s ease;
 }
 
 .radio-list-item:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .radio-list-item:hover:not(.disabled) {
-  background-color: #f8f9fa;
+    background-color: #f8f9fa;
 }
 
 .radio-list-item.selected {
-  background-color: #e3f2fd;
+    background-color: #e3f2fd;
 }
 
 .radio-list-item.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .radio-list-item.disabled .list-item-content {
-  cursor: not-allowed;
+    cursor: not-allowed;
 }
 
 .list-item-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    cursor: pointer;
 }
 
 .list-item-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
 }
 
 .list-item-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .list-item-icon {
-  color: #666;
-  font-size: 20px;
+    color: #666;
+    font-size: 20px;
 }
 
 .list-item-text {
-  flex: 1;
+    flex: 1;
 }
 
 .list-item-title {
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 2px;
-  display: flex;
-  align-items: center;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
 }
 
 .list-item-description {
-  font-size: 12px;
-  color: #666;
-  line-height: 1.3;
+    font-size: var(--mahis-text-xs, 0.75rem);
+    color: #666;
+    line-height: 1.3;
 }
 
 .item-clear-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  background: none;
-  border: 1px solid #dc3545;
-  border-radius: 50%;
-  color: #dc3545;
-  cursor: pointer;
-  transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    background: none;
+    border: 1px solid #dc3545;
+    border-radius: 50%;
+    color: #dc3545;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .item-clear-button:hover:not(:disabled) {
-  background-color: #dc3545;
-  color: white;
+    background-color: #dc3545;
+    color: white;
 }
 
 .item-clear-button ion-icon {
-  font-size: 12px;
+    font-size: 12px;
 }
 
 .radio-inline {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 10px;
 }
 
 .radio-inline-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .radio-button-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .radio-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border: 2px solid #e6e6e6;
-  border-radius: 8px;
-  background-color: #fff;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 14px;
-  font-weight: 500;
-  position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid #00640180;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #006401;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: var(--mahis-text-sm, 0.875rem);
+    font-weight: 500;
+    position: relative;
 }
 
 .radio-button:hover:not(.disabled) {
-  border-color: #3880ff;
-  background-color: #f8f9ff;
+    border-color: #006401;
+    background-color: #014502;
+    color: #fff;
 }
 
 .radio-button.selected {
-  border-color: #3880ff;
-  background-color: #3880ff;
-  color: #fff;
+    border-color: #006401;
+    background-color: #006401;
+    color: #fff;
 }
 
 .radio-button.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .radio-button.error {
-  border-color: #dc3545;
+    border-color: #dc3545;
 }
 
 .button-icon {
-  font-size: 16px;
+    font-size: 16px;
 }
 
 .button-clear-icon {
-  font-size: 14px;
-  margin-left: auto;
-  padding: 2px;
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
+    font-size: 14px;
+    margin-left: auto;
+    padding: 2px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
 }
 
 .button-clear-icon:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .custom-radio {
-  --background: #fff;
-  --background-checked: #3880ff;
-  --border-color: #d1d5db;
-  --border-color-checked: #3880ff;
-  --inner-border-color: #fff;
+    --background: #fff;
+    --background-checked: #006401;
+    --border-color: #d1d5db;
+    --border-color-checked: #006401;
+    --inner-border-color: #fff;
 }
 
 .custom-radio.error {
-  --border-color: #dc3545;
-  --border-color-checked: #dc3545;
+    --border-color: #dc3545;
+    --border-color-checked: #dc3545;
 }
 
 .error-note {
-  display: block;
-  margin-top: 8px;
-  color: #dc3545;
-  font-size: 12px;
+    display: block;
+    margin-top: 8px;
+    color: #dc3545;
+    font-size: var(--mahis-text-xs, 0.75rem);
 }
 
 .helper-note {
-  display: block;
-  margin-top: 8px;
-  color: #666;
-  font-size: 12px;
+    display: block;
+    margin-top: 8px;
+    color: #666;
+    font-size: var(--mahis-text-xs, 0.75rem);
 }
 
 .clear-section {
-  margin-top: 12px;
-  text-align: center;
+    margin-top: 12px;
+    text-align: center;
 }
 
 .clear-button-bottom {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  background: none;
-  border: 1px solid #dc3545;
-  border-radius: 6px;
-  color: #dc3545;
-  cursor: pointer;
-  font-size: 13px;
-  transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: none;
+    border: 1px solid #dc3545;
+    border-radius: 6px;
+    color: #dc3545;
+    cursor: pointer;
+    font-size: var(--mahis-text-sm, 0.875rem);
+    transition: all 0.2s ease;
 }
 
 .clear-button-bottom:hover:not(:disabled) {
-  background-color: #dc3545;
-  color: white;
+    background-color: #dc3545;
+    color: white;
 }
 
 .clear-button-bottom:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .field-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
+    .field-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
 
-  .clear-button {
-    align-self: flex-end;
-  }
+    .clear-button {
+        align-self: flex-end;
+    }
 
-  .radio-group {
-    gap: 10px;
-  }
+    .radio-group {
+        gap: 10px;
+    }
 
-  .radio-inline {
-    flex-direction: column;
-    gap: 12px;
-  }
+    .radio-inline {
+        flex-direction: column;
+        gap: 12px;
+    }
 
-  .radio-button-group {
-    flex-direction: column;
-  }
+    .list-item-content {
+        padding: 12px;
+    }
 
-  .radio-button {
-    width: 100%;
-    justify-content: center;
-  }
+    .list-item-left {
+        gap: 10px;
+    }
 
-  .list-item-content {
-    padding: 12px;
-  }
-
-  .list-item-left {
-    gap: 10px;
-  }
-
-  .option-clear-icon {
-    width: 14px;
-    height: 14px;
-  }
+    .option-clear-icon {
+        width: 14px;
+        height: 14px;
+    }
 }
 </style>

@@ -4,12 +4,13 @@ declare function clearSelection(): void;
 declare const _default: import('vue').DefineComponent<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
     config: RadioButtonFieldConfig;
     allFormValues: Record<string, any>;
+    mode?: string;
 }>>, {
     getValue: () => any;
     setValue: (value: string | number | boolean | null) => void;
     isValid: import('vue').ComputedRef<boolean>;
     validate: () => any;
-    shouldShow: import('vue').ComputedRef<boolean>;
+    shouldShow: import('vue').ComputedRef<any>;
     clearSelection: typeof clearSelection;
     getSelectedOption: () => import('../interfaces/StandardFormInterfaces/RadioButtonFieldConfig').RadioOption | null;
     markAsTouched: () => boolean;
@@ -23,6 +24,7 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
     config: RadioButtonFieldConfig;
     allFormValues: Record<string, any>;
+    mode?: string;
 }>>> & Readonly<{
     "onUpdate:value"?: ((...args: any[]) => any) | undefined;
     "onField-changed"?: ((...args: any[]) => any) | undefined;

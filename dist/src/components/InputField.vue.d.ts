@@ -3,16 +3,18 @@ import { InputFieldConfig } from '../interfaces/StandardFormInterfaces/InputFiel
 declare const _default: import('vue').DefineComponent<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
     config: InputFieldConfig;
     allFormValues: Record<string, any>;
+    mode?: string;
 }>>, {
     getValue: () => any;
     getUnit: () => string | null;
-    setValue: (value: any) => any;
-    setUnit: (unit: string | null) => string | null;
+    setValue: (value: any) => void;
+    setUnit: (unit: string | null) => void;
     isValid: import('vue').ComputedRef<boolean>;
     validate: () => any;
-    shouldShow: import('vue').ComputedRef<boolean>;
+    shouldShow: import('vue').ComputedRef<any>;
     markAsTouched: () => void;
     resetTouched: () => void;
+    clearError: () => void;
 }, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     "update:value": (...args: any[]) => void;
     "field-changed": (...args: any[]) => void;
@@ -20,6 +22,7 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
     config: InputFieldConfig;
     allFormValues: Record<string, any>;
+    mode?: string;
 }>>> & Readonly<{
     "onUpdate:value"?: ((...args: any[]) => any) | undefined;
     "onField-changed"?: ((...args: any[]) => any) | undefined;

@@ -5,6 +5,7 @@ export interface GridConfig {
     lg?: string;
     xl?: string;
     s?: string; // default column size
+    m?: string;
 }
 
 export interface ActionButtonConfig {

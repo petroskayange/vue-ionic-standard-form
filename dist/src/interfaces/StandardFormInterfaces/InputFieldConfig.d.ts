@@ -10,7 +10,18 @@ export interface InputFieldConfig extends BaseFormElement {
     placeholder?: string;
     helperText?: string;
     type?: string;
+    inputMode?: string;
+    capitalizeFirstLetter?: boolean;
+    digitsOnly?: boolean;
+    /** Show the validation error only once the user leaves the field, not while typing. */
+    validateOnBlur?: boolean;
+    min?: number | string;
+    max?: number | string;
+    step?: number | string;
+    showStepperControls?: boolean;
+    pattern?: string;
     icon?: any;
+    imageIcon?: string;
     leftText?: string;
     rightIcon?: any;
     unit?: string;
@@ -22,4 +33,5 @@ export interface InputFieldConfig extends BaseFormElement {
     unitPlaceholder?: string;
     initialUnit?: string;
     unitValidation?: (unitValue: string | null) => string | null;
+    clearValueOnUnitChange?: boolean;
 }

@@ -3,14 +3,15 @@ import { DateFieldConfig } from '../interfaces/StandardFormInterfaces/DateFieldC
 declare const _default: import('vue').DefineComponent<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
     config: DateFieldConfig;
     allFormValues: Record<string, any>;
+    mode?: string;
 }>>, {
     getValue: () => any;
-    getRawValue: () => null;
+    getRawValue: () => string | Date | null;
     setValue: (value: string) => string;
-    setRawValue: (value: null) => null;
+    setRawValue: (value: string | Date | null) => string | Date | null;
     isValid: import('vue').ComputedRef<boolean>;
     validate: () => any;
-    shouldShow: import('vue').ComputedRef<boolean>;
+    shouldShow: import('vue').ComputedRef<any>;
     markAsTouched: () => boolean;
     resetTouched: () => boolean;
 }, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
@@ -20,6 +21,7 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
     config: DateFieldConfig;
     allFormValues: Record<string, any>;
+    mode?: string;
 }>>> & Readonly<{
     "onUpdate:value"?: ((...args: any[]) => any) | undefined;
     "onField-changed"?: ((...args: any[]) => any) | undefined;

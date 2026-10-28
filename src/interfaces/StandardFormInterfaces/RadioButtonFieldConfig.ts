@@ -13,8 +13,10 @@ export type RadioGroupType = "standard" | "list" | "inline" | "button";
 export interface RadioButtonFieldConfig extends BaseFormElement {
     componentType: "radioButtonField";
     type?: RadioGroupType;
+    mode?: BaseFormElement["mode"];
     options: RadioOption[];
     helperText?: string;
+    indentOptions?: boolean;
     showClearButton?: boolean;
     showClearButtonBottom?: boolean;
     showOptionClear?: boolean;

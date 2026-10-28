@@ -6,6 +6,7 @@ export interface CheckboxOption {
     description?: string;
     icon?: any;
     disabled?: boolean;
+    exclusive?: boolean;
 }
 export interface CheckboxFieldConfig extends BaseFormElement {
     componentType: "checkboxField";
@@ -13,4 +14,5 @@ export interface CheckboxFieldConfig extends BaseFormElement {
     label?: string;
     options?: CheckboxOption[];
     helperText?: string;
+    twoColumns?: boolean;
 }

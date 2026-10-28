@@ -8,7 +8,7 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     setValue: (value: any) => void;
     isValid: import('vue').ComputedRef<boolean>;
     validate: () => any;
-    shouldShow: import('vue').ComputedRef<boolean>;
+    shouldShow: import('vue').ComputedRef<any>;
     selectAll: () => void;
     deselectAll: () => void;
     markAsTouched: () => boolean;

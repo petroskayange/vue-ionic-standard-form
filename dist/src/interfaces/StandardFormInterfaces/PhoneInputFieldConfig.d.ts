@@ -11,6 +11,7 @@ export interface PhoneInputFieldConfig extends BaseFormElement {
     autoFormat?: boolean;
     inputOptions?: Record<string, any>;
     dropdownOptions?: Record<string, any>;
+    normalizePhoneNumber?: (phoneNumber: string) => string;
     onCountryChanged?: (country: PhoneCountryInfo) => void;
 }
 export interface PhoneCountryInfo {

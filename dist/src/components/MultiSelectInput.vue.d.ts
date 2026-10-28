@@ -3,12 +3,13 @@ import { MultiSelectFieldConfig } from '../interfaces/StandardFormInterfaces/Mul
 declare const _default: import('vue').DefineComponent<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
     config: MultiSelectFieldConfig;
     allFormValues: Record<string, any>;
+    mode?: string;
 }>>, {
     getValue: () => any;
     setValue: (value: any) => void;
     isValid: import('vue').ComputedRef<boolean>;
     validate: () => any;
-    shouldShow: import('vue').ComputedRef<boolean>;
+    shouldShow: import('vue').ComputedRef<any>;
     markAsTouched: () => boolean;
     resetTouched: () => boolean;
     clearSelection: () => void;
@@ -20,6 +21,7 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
     config: MultiSelectFieldConfig;
     allFormValues: Record<string, any>;
+    mode?: string;
 }>>> & Readonly<{
     "onUpdate:value"?: ((...args: any[]) => any) | undefined;
     "onField-changed"?: ((...args: any[]) => any) | undefined;

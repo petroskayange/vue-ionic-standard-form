@@ -5,13 +5,13 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     allFormValues: Record<string, any>;
 }>>, {
     getValue: () => {
-        phoneNumber: any;
+        phoneNumber: string;
         countryCode: string;
         countryIso: string;
         countryName: string;
     };
     getPhoneObject: () => {
-        phoneNumber: any;
+        phoneNumber: string;
         countryCode: string;
         countryIso: string;
         countryName: string;
@@ -30,7 +30,7 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     };
     isValid: import('vue').ComputedRef<boolean>;
     validate: () => any;
-    shouldShow: import('vue').ComputedRef<boolean>;
+    shouldShow: import('vue').ComputedRef<any>;
     markAsTouched: () => boolean;
     resetTouched: () => boolean;
 }, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
