@@ -2,7 +2,11 @@
 
 A schema-driven form component for Vue 3 and Ionic Vue. A `formData` array selects the controls to render; `StandardForm` keeps their values, runs field validation, and exposes methods through a Vue ref.
 
-This README describes the **local package source**. The published npm version may differ until a new release is published. The examples are adapted from form configurations in MaHIS, with application services removed so they can be used in another project.
+The examples are adapted from form configurations in MaHIS, with application services removed so they can be used in another project.
+
+## Upgrading from 1.0.2
+
+Version 2.0.0 changes the result of `getFormValues()`: it now returns only nonempty, visible answers plus observation metadata. Values such as `false` and `0` remain in the result. If your application needs every current value, including empty answers, use the exposed `formValues` snapshot instead. The form also clears answers when their fields become hidden by a condition. `resetForm()` is asynchronous; await it before reading the reset state.
 
 ## Install and first form
 
