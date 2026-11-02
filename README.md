@@ -4,6 +4,19 @@ A schema-driven form component for Vue 3 and Ionic Vue. A `formData` array selec
 
 The examples are adapted from form configurations in MaHIS, with application services removed so they can be used in another project.
 
+## Local playground
+
+Run the interactive example page from this repository:
+
+```bash
+npm install
+npm run dev
+```
+
+Open the local URL printed by Vite (usually `http://localhost:5173`). The playground has presets covering every built-in component, an editable JSON `formData` schema, live form values, `getFormValues()` output, validation, and reset controls. It also demonstrates MaHIS-only facility and prescription controls through Vue slots. The page is for local testing; it does not submit data to MaHIS.
+
+Use `npm run check:playground` to type-check the playground. The vital signs preset includes a validation callback and a conditional field. JSON cannot contain JavaScript callbacks such as `condition`, `validation`, or `computeValue`; applying edited JSON removes those callbacks. Use the TypeScript examples below for those features.
+
 ## Upgrading from 1.0.2
 
 Version 2.0.0 changes the result of `getFormValues()`: it now returns only nonempty, visible answers plus observation metadata. Values such as `false` and `0` remain in the result. If your application needs every current value, including empty answers, use the exposed `formValues` snapshot instead. The form also clears answers when their fields become hidden by a condition. `resetForm()` is asynchronous; await it before reading the reset state.

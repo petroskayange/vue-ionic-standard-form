@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 250" role="img" aria-labelledby="title">
+  <title id="title">Clipboard with a heart</title>
+  <rect width="520" height="250" rx="20" fill="#eaf4fb"/>
+  <rect x="178" y="26" width="164" height="198" rx="16" fill="#fff" stroke="#99bcd3" stroke-width="4"/>
+  <rect x="224" y="18" width="72" height="25" rx="9" fill="#2b6d91"/>
+  <path d="M209 78h102M209 176h102" stroke="#b6d0e0" stroke-width="6" stroke-linecap="round"/>
+  <path d="M260 150c-34-23-49-38-38-56 9-14 27-11 38 2 11-13 29-16 38-2 11 18-4 33-38 56Z" fill="#d67e76"/>
+</svg>
