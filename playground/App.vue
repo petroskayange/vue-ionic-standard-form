@@ -34,8 +34,8 @@
               </button>
             </div>
             <div class="local-note">
-              <strong>Local playground</strong>
-              <span>Edits stay in this browser. No patient data or API connection is used.</span>
+              <strong>In your browser</strong>
+              <span>Form values stay in this browser. Nothing is submitted to MaHIS.</span>
             </div>
           </aside>
 
