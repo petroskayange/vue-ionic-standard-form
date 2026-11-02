@@ -17,6 +17,8 @@ Open the local URL printed by Vite (usually `http://localhost:5173`). The playgr
 
 Use `npm run check:playground` to type-check the playground. The vital signs preset includes a validation callback and a conditional field. JSON cannot contain JavaScript callbacks such as `condition`, `validation`, or `computeValue`; applying edited JSON removes those callbacks. Use the TypeScript examples below for those features.
 
+The [online playground](https://petroskayange.github.io/vue-ionic-standard-form/) is built with `npm run build:playground` and deployed from `main` through GitHub Pages.
+
 ## Upgrading from 1.0.2
 
 Version 2.0.0 changes the result of `getFormValues()`: it now returns only nonempty, visible answers plus observation metadata. Values such as `false` and `0` remain in the result. If your application needs every current value, including empty answers, use the exposed `formValues` snapshot instead. The form also clears answers when their fields become hidden by a condition. `resetForm()` is asynchronous; await it before reading the reset state.

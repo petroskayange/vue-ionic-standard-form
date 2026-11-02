@@ -1,4 +1,5 @@
 import type { FormElement } from "../src/interfaces/FormElement";
+import assessmentIllustrationUrl from "./assessment-illustration.svg?url";
 
 export interface PlaygroundPreset {
   id: string;
@@ -59,7 +60,7 @@ export const presets: PlaygroundPreset[] = [
       { componentType: "Dashes" },
       { componentType: "scoreField", name: "thompsonScoreComputed", title: "Example score", value: 4, variant: "success", padTo: 2 },
       { componentType: "summaryField", name: "reviewSummary", title: "Example summary", summaryRows: [{ section: "Vitals", label: "Weight", value: "3.2 kg" }, { section: "Vitals", label: "Oedema", value: "None" }] },
-      { componentType: "illustration", name: "assessmentIllustration", title: "Illustration", imageSrc: "/playground/assessment-illustration.svg", imageAlt: "Simple line illustration of a clipboard and heart", caption: "Replace this image with an application asset." },
+      { componentType: "illustration", name: "assessmentIllustration", title: "Illustration", imageSrc: assessmentIllustrationUrl, imageAlt: "Simple line illustration of a clipboard and heart", caption: "Replace this image with an application asset." },
       { componentType: "infographicField", name: "hypothermia_management", header: "Hypothermia management", displayMode: "cards", showStepNumber: true, infographicData: { key: "hypothermia", sections: [{ title: "Keep warm", content: "Dry and wrap the baby." }, { title: "Recheck", content: "Repeat the temperature measurement." }], footerNote: "Escalate if temperature remains low." } },
       { componentType: "Slot", name: "demoCounter", slotName: "playgroundCounter" },
       { componentType: "facilitySelectorField", name: "transferFacility", header: "Receiving facility" },
